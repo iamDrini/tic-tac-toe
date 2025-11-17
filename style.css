@@ -1,0 +1,57 @@
+/* Gesamtseite */
+body {
+    background-color: #323232;
+    font-family: 'Open Sans', sans-serif;
+    margin: 0;
+    padding: 0;
+    color: white;
+}
+
+/* Tic Tac Toe Tabelle */
+.ticTacToe {
+    border-collapse: collapse;   /* nötig damit innere Linien funktionieren */
+    margin: 40px auto;           /* zentriert */
+}
+
+#content{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 300px;
+}
+
+h1{
+    text-align: center;
+}
+
+/* Tabellenzellen */
+.ticTacToe td {
+    width: 100px;
+    height: 100px;
+    text-align: center;
+    font-size: 40px;
+    font-weight: bold;
+    color: white;
+    cursor:pointer;
+
+    /* Innere Linien: 5px weiß */
+    border: 5px solid white;
+}
+
+td:hover{
+    background-color: rgba(255,255,255, 0.3);
+}
+
+/* Äußere Rahmen entfernen -> nur innere Linien sichtbar */
+.ticTacToe tr:first-child td {
+    border-top: none;
+}
+.ticTacToe tr:last-child td {
+    border-bottom: none;
+}
+.ticTacToe td:first-child {
+    border-left: none;
+}
+.ticTacToe td:last-child {
+    border-right: none;
+}
