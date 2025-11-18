@@ -11,6 +11,7 @@ let fields = [
 ]
 
 let currentPlayer = 'circle';
+let gameOver = false;
 
 function init(){
 
@@ -18,7 +19,8 @@ render();
 }
 
 function render() {
-    let tableHTML = '<table class="ticTacToe">';
+    let tableHTML = '<div class="board-wrapper" style="position: relative;">';
+        tableHTML = '<table class="ticTacToe">';
 
     for (let row = 0; row < 3; row++) {
         tableHTML += '<tr>';
@@ -40,12 +42,30 @@ function render() {
     }
 
     tableHTML += '</table>';
+        tableHTML += `<svg id="win-line" width="210" height="210"
+                      style="position:absolute; pointer-events:none;"></svg>`;
+    tableHTML += '</div>';
 
     document.getElementById('content').innerHTML = tableHTML;
 }
 
+function resetGame(){
+    fields=[  null, 
+    null, 
+    null,
+    null, 
+    null, 
+    null,
+    null, 
+    null, 
+    null ];
+    gameOver = false;
+    currentPlayer='circle';
+    render();
+}
+
 function handleClick(index, tdElement) {
-    if (fields[index] !== null) return; // Sicherheit
+    if (fields[index] !== null || gameOver) return; // Sicherheit
 
     // Spieler setzen
     fields[index] = currentPlayer;
@@ -60,9 +80,82 @@ function handleClick(index, tdElement) {
     // Klick deaktivieren
     tdElement.removeAttribute('onclick');
 
+        const winningCombo = checkWinner();
+
+    if (winningCombo) {
+        gameOver = true;
+        drawWinningLine(winningCombo);
+        return;
+    }
+
     // Spieler wechseln
     currentPlayer = currentPlayer === 'circle' ? 'cross' : 'circle';
 }
+
+function checkWinner() {
+    const combinations = [
+        [0,1,2],  // top row
+        [3,4,5],  // middle row
+        [6,7,8],  // bottom row
+        [0,3,6],  // left column
+        [1,4,7],  // middle column
+        [2,5,8],  // right column
+        [0,4,8],  // main diagonal
+        [2,4,6]   // secondary diagonal
+    ];
+
+    for (let combo of combinations) {
+        const [a, b, c] = combo;
+
+        if (fields[a] && fields[a] === fields[b] && fields[a] === fields[c]) {
+            return combo; // Gewinner gefunden
+        }
+    }
+
+    return null; // kein Gewinner
+}
+
+function drawWinningLine(combo) {
+    const winLine = document.getElementById('win-line');
+    winLine.innerHTML = '';
+
+    const cellCenters = [
+        {x:0,  y:0},   {x:105, y:0},   {x:210, y:0},
+        {x:0,  y:105},  {x:105, y:105},  {x:210, y:105},
+        {x:0,  y:210},  {x:105, y:210},  {x:210, y:210},
+    ];
+
+    const p1 = cellCenters[combo[0]];
+    const p2 = cellCenters[combo[2]];
+
+    const line = `
+        <line 
+            x1="${p1.x}" y1="${p1.y}" 
+            x2="${p1.x}" y2="${p1.y}"
+            stroke="white"
+            stroke-width="8"
+            stroke-linecap="round"
+        >
+            <animate
+                attributeName="x2"
+                from="${p1.x}"
+                to="${p2.x}"
+                dur="0.2s"
+                fill="freeze"
+            />
+            <animate
+                attributeName="y2"
+                from="${p1.y}"
+                to="${p2.y}"
+                dur="0.2s"
+                fill="freeze"
+            />
+        </line>
+    `;
+
+    winLine.innerHTML = line;
+}
+
 
 
 function generateCircleSVG() {

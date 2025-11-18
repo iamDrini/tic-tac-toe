@@ -10,7 +10,8 @@ body {
 /* Tic Tac Toe Tabelle */
 .ticTacToe {
     border-collapse: collapse;   /* nötig damit innere Linien funktionieren */
-    margin: 40px auto;           /* zentriert */
+    margin: 40px auto;   
+    position: relative;        /* zentriert */
 }
 
 #content{
@@ -19,6 +20,7 @@ body {
     align-items: center;
     margin-top: 300px;
 }
+
 
 h1{
     text-align: center;
@@ -54,4 +56,36 @@ td:hover{
 }
 .ticTacToe td:last-child {
     border-right: none;
+}
+
+/* Container zentriert den Button */
+#button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+}
+
+/* Button Styling */
+#restart-btn {
+    background-color: #00B0EF;
+    color: #ffffff;
+    padding: 12px 24px;
+    font-size: 18px;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.2s ease-in-out;
+}
+
+/* Hover Effekt */
+#restart-btn:hover {
+    background-color: #008bbd;
+    transform: scale(1.05);
+}
+
+/* Active Effekt */
+#restart-btn:active {
+    transform: scale(0.97);
+    background-color: #00749c;
 }
